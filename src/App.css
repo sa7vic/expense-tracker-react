@@ -1,159 +1,202 @@
-@import url('htpps://fonts.googleapis.com/css?family=Lato&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
 
-:root{
-    --box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+:root {
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+  --primary-color: #9b59b6;
+  --secondary-color: #8e44ad;
+  --bg-light: #f7f7f7;
+  --bg-main: #e4c1f9;
+  --plus-color: #2ecc71;
+  --minus-color: #c0392b;
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    background-color: #d1a2e1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
-    font-family: 'Lato', sans-serif;
-    font-size: 18px;
+  background-color: var(--bg-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+  font-size: 18px;
+  transition: var(--transition);
 }
 
 .container {
-    margin: 30px auto;
-    width: 400px;
-    box-shadow: var(--box-shadow);
-    padding: 20px;
-    background-color: #f7f7f7;
+  margin: 30px auto;
+  width: 400px;
+  box-shadow: var(--box-shadow);
+  padding: 25px 30px;
+  background-color: var(--bg-light);
+  border-radius: 10px;
+  animation: fadeIn 0.5s ease-in;
 }
 
-h1 {
-    letter-spacing: 1px;
-    margin: 0;
-    text-align: center;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-h2{
+h1, h2, h3, h4 {
+  margin: 0;
   text-align: center;
+  letter-spacing: 1px;
+  color: #333;
 }
 
 h3 {
-    border-bottom: 1px solid #bbb;
-    padding-bottom: 10px;
-    margin: 40px 0 10px;
+  border-bottom: 2px solid #bbb;
+  padding-bottom: 10px;
+  margin: 40px 0 20px;
+  font-weight: 500;
 }
 
 h4 {
-    margin: 0;
-    text-transform: uppercase;
-    text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 5px;
 }
 
 .inc-exp-container {
-    background-color: #ad4dc8;
-    box-shadow: var(--box-shadow);
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    margin: 20px 0;
+  background-color: var(--primary-color);
+  box-shadow: var(--box-shadow);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  border-radius: 8px;
+  color: #fff;
+  animation: fadeIn 0.6s ease-in;
 }
 
 .inc-exp-container > div {
-    flex: 1;
-    text-align: center;
+  flex: 1;
+  text-align: center;
 }
 
-.inc-exp-container > div:first-of-type{
-    border-right: 1px solid #dedede;
+.inc-exp-container > div:first-of-type {
+  border-right: 1px solid #ddd;
 }
 
 .money {
-    font-size: 20px;
-    letter-spacing: 1px;
-    margin: 5px 0;
+  font-size: 20px;
+  letter-spacing: 1px;
+  margin: 5px 0;
+  transition: var(--transition);
 }
 
-.money.plus{
-    color: #2ecc71;
+.money.plus {
+  color: var(--plus-color);
 }
 
-.money.minus{
-    color: #c0392b;
+.money.minus {
+  color: var(--minus-color);
 }
 
 label {
-    display: inline-block;
-    margin: 10px 0;
+  display: inline-block;
+  margin: 10px 0 5px;
+  font-weight: 500;
 }
 
 input[type='text'], input[type='number'] {
-    border: 1px solid #dedede;
-    border-radius: 2px;
-    display: block;
-    font-size: 16px;
-    padding: 10px;
-    width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: block;
+  font-size: 16px;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 15px;
+  transition: var(--transition);
+}
+
+input[type='text']:focus, input[type='number']:focus {
+  border-color: var(--secondary-color);
+  outline: none;
+  box-shadow: 0 0 5px rgba(155, 89, 182, 0.5);
 }
 
 .btn {
-    cursor: pointer;
-    background-color: #ad4cc8;
-    box-shadow: var(--box-shadow);
-    color: #fff;
-    border: 0;
-    display: block;
-    font-size: 16px;
-    margin: 10px 0 30px;
-    padding: 10px;
-    width: 100%;
+  cursor: pointer;
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  box-shadow: var(--box-shadow);
+  color: #fff;
+  border: none;
+  display: block;
+  font-size: 16px;
+  margin-top: 10px;
+  padding: 12px;
+  width: 100%;
+  border-radius: 6px;
+  transition: var(--transition);
+}
+
+.btn:hover {
+  transform: scale(1.02);
+  opacity: 0.95;
 }
 
 .btn:focus, .delete-btn:focus {
-    outline: 0;
+  outline: none;
 }
 
 .list {
-    list-style-type: none;
-    padding: 0;
-    margin-bottom: 40px;
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 40px;
 }
 
 .list li {
-    background-color: #fff;
-    box-shadow: var(--box-shadow);
-    color: #333;
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    padding: 10px;
-    margin: 10px 0;
+  background-color: #fff;
+  box-shadow: var(--box-shadow);
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  padding: 12px 15px;
+  margin: 10px 0;
+  border-radius: 6px;
+  transition: var(--transition);
+  animation: fadeIn 0.5s ease-in;
 }
 
 .list li.plus {
-    border-right: 5px solid #2ecc71;
+  border-right: 6px solid var(--plus-color);
 }
 
 .list li.minus {
-    border-right: 5px solid #c0392b;
+  border-right: 6px solid var(--minus-color);
 }
 
 .delete-btn {
-    cursor: pointer;
-    background-color: #e74c3c;
-    border: 0;
-    color: #fff;
-    font-size: 20px;
-    line-height: 20px;
-    padding: 2px 5px;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translate(-100%, -50%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  cursor: pointer;
+  background-color: var(--minus-color);
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  line-height: 18px;
+  padding: 6px 10px;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-100%, -50%);
+  border-radius: 0 4px 4px 0;
+  opacity: 0;
+  transition: var(--transition);
 }
 
 .list li:hover .delete-btn {
-    opacity: 1;
+  opacity: 1;
+  transform: translate(-90%, -50%);
 }
