@@ -200,3 +200,38 @@ input[type='text']:focus, input[type='number']:focus {
   opacity: 1;
   transform: translate(-90%, -50%);
 }
+
+
+.success-msg {
+  color: var(--plus-color);
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
+  animation: fadeIn 0.3s ease;
+}
+
+
+.suggestions {
+  background: #fff;
+  border: 1px solid #ccc;
+  list-style: none;
+  padding: 0;
+  margin-top: 5px;
+  border-radius: 4px;
+  box-shadow: var(--box-shadow);
+  max-height: 120px;
+  overflow-y: auto;
+  z-index: 10;
+  position: absolute;
+  width: 100%;
+}
+
+.suggestions li {
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.suggestions li:hover {
+  background: #f0f0f0;
+}
