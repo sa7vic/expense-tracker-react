@@ -1,6 +1,6 @@
 # 💸 Expense Tracker (React)
 
-A simple single-page **Expense Tracker** built using **React** as part of my learning journey. This beginner project helps manage and track your income and expenses with a clean and minimal UI.
+A simple single-page **Expense Tracker** built using **React** as part of my learning journey. This beginner project helps manage and track your income and expenses with a clean and minimal UI — and a touch of fun with emoji suggestions!
 
 ---
 
@@ -11,7 +11,8 @@ A simple single-page **Expense Tracker** built using **React** as part of my lea
 - ✅ See a breakdown of **total income** and **total expenses**
 - ✅ View your **transaction history**
 - ✅ Delete individual transactions
-- ✅ Comes with **4 default transactions** (you can delete them)
+- ✅ Comes with **4 default sample transactions**
+- 🧠 Typing common keywords like `coff` or `rent` will auto-suggest 🧾 expense categories (e.g., `☕ Coffee`, `🏠 Rent`)
 - 🚫 Data is **not stored** — refreshing the page resets everything
 
 ---
@@ -28,31 +29,47 @@ A simple single-page **Expense Tracker** built using **React** as part of my lea
 Clone the repo and run it locally:
 
 ```bash
-git clone https://github.com/your-username/expense-tracker-react.git
+git clone https://github.com/sa7vic/expense-tracker-react.git
 cd expense-tracker-react
 npm install
 npm start
-```
+````
+
 ---
 
 ## ⚠️ Notes
-- This is a beginner practice project
-- It uses React state only — no database, no backend, no authentication
-- All data is lost on refresh (no persistence)
+
+* This is a beginner practice project
+* Uses **React state only** — no backend or persistent storage
+* All data is lost on refresh
+* Emoji suggestions are simple keyword-based substitutions (not AI/autocomplete)
 
 ---
 
 ## 📚 Learnings
-- Learned how to manage state using useState
-- Built components and passed props
-- Practiced conditional rendering and list rendering in React
+
+* Managed app state using `useState`
+* Created reusable functional components
+* Practiced conditional rendering and list mapping in React
+* Implemented a basic keyword-to-emoji mapping for friendly UX
 
 ---
 
 ## 🛠️ Future Improvements
-- Add local storage or database support
-- Add user authentication
-- Better styling and animations
+
+* 💾 Add local storage or database support
+* 🔐 User authentication
+* 🎨 Better styling and animations
+* 🔍 Smarter emoji/category suggestion using fuzzy search or AI
+* 📈 Graph/chart view for analytics
+
+---
 
 ## 🙌 Credits
-Inspired by beginner React tutorials and projects.
+
+Inspired by beginner React tutorials and projects across the web. Emojis used for fun and intuitive UX 💡
+
+---
+
+**Made with ❤️ while learning React.**
+
