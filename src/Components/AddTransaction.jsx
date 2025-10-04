@@ -1,5 +1,5 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
-import { GlobalContext } from "../Context/GlobalState";
+import React, { useState, useRef, useEffect } from "react";
+import useTransactionStore from "../store/transactionStore";
 
 export const AddTransaction = () => {
   const [text, setText] = useState("");
@@ -10,7 +10,7 @@ export const AddTransaction = () => {
   const inputRef = useRef(null);
   const suggestionsRef = useRef(null);
 
-  const { addTransaction } = useContext(GlobalContext);
+  const addTransaction = useTransactionStore((state) => state.addTransaction);
 
   const suggestions = ["Groceries", "Coffee", "Rent", "Bills", "Salary", "Snacks", "Investment", "Gift"];
   const filteredSuggestions = suggestions.filter(
