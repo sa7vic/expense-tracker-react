@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
-import { GlobalContext } from "../Context/GlobalState";
+import React from "react";
+import useTransactionStore from "../store/transactionStore";
 import { Transaction } from "./Transaction";
 export const TransactionList = () => {
-    const { transactions } = useContext(GlobalContext);
+    const transactions = useTransactionStore((state) => state.transactions);
     return (
         <>
             <h3>History</h3>

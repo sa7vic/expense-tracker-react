@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { GlobalContext } from '../Context/GlobalState';
+import React from 'react';
+import useTransactionStore from '../store/transactionStore';
 
 export const Transaction = ({ transaction }) => {
-    const { deleteTransaction } = useContext(GlobalContext);
+    const deleteTransaction = useTransactionStore((state) => state.deleteTransaction);
 
     const emojiMap = {
         Groceries: "🛒",
