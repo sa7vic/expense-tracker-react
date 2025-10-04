@@ -71,5 +71,11 @@ Inspired by beginner React tutorials and projects across the web. Emojis used fo
 
 ---
 
+## License
+
+This project is licensed under the MIT License.
+
+---
+
 **Made with ❤️ while learning React.**
 
