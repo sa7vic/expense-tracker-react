@@ -3,14 +3,18 @@ import useTransactionStore from '../store/transactionStore';
 
 export const TransactionStats = () => {
   const transactions = useTransactionStore((state) => state.transactions);
-  const getTotalBalance = useTransactionStore((state) => state.getTotalBalance);
-  const getIncome = useTransactionStore((state) => state.getIncome);
-  const getExpense = useTransactionStore((state) => state.getExpense);
   const clearAllTransactions = useTransactionStore((state) => state.clearAllTransactions);
   const resetToInitial = useTransactionStore((state) => state.resetToInitial);
 
   const totalTransactions = transactions.length;
-  const averageTransaction = totalTransactions > 0 ? (getTotalBalance() / totalTransactions).toFixed(2) : 0;
+  const totalBalance = transactions.reduce((total, transaction) => total + transaction.amount, 0);
+  const income = transactions
+    .filter(transaction => transaction.amount > 0)
+    .reduce((total, transaction) => total + transaction.amount, 0);
+  const expense = transactions
+    .filter(transaction => transaction.amount < 0)
+    .reduce((total, transaction) => total + Math.abs(transaction.amount), 0);
+  const averageTransaction = totalTransactions > 0 ? (totalBalance / totalTransactions).toFixed(2) : 0;
 
   const handleClearAll = () => {
     if (window.confirm('Are you sure you want to clear all transactions?')) {
@@ -35,10 +39,10 @@ export const TransactionStats = () => {
           <strong>Average per Transaction:</strong> ${averageTransaction}
         </div>
         <div>
-          <strong>Total Income:</strong> ${getIncome().toFixed(2)}
+          <strong>Total Income:</strong> ${income.toFixed(2)}
         </div>
         <div>
-          <strong>Total Expenses:</strong> ${getExpense().toFixed(2)}
+          <strong>Total Expenses:</strong> ${expense.toFixed(2)}
         </div>
       </div>
       

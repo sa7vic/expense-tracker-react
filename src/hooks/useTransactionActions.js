@@ -16,14 +16,19 @@ export const useTransactionActions = () => {
 
 export const useTransactionData = () => {
   const transactions = useTransactionStore((state) => state.transactions);
-  const getTotalBalance = useTransactionStore((state) => state.getTotalBalance);
-  const getIncome = useTransactionStore((state) => state.getIncome);
-  const getExpense = useTransactionStore((state) => state.getExpense);
+
+  const totalBalance = transactions.reduce((total, transaction) => total + transaction.amount, 0);
+  const income = transactions
+    .filter(transaction => transaction.amount > 0)
+    .reduce((total, transaction) => total + transaction.amount, 0);
+  const expense = transactions
+    .filter(transaction => transaction.amount < 0)
+    .reduce((total, transaction) => total + Math.abs(transaction.amount), 0);
 
   return {
     transactions,
-    totalBalance: getTotalBalance(),
-    income: getIncome(),
-    expense: getExpense(),
+    totalBalance,
+    income,
+    expense,
   };
 };

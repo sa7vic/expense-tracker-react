@@ -9,7 +9,48 @@ export const BudgetManager = () => {
   const budget = useTransactionStore((state) => state.budget);
   const budgetPeriod = useTransactionStore((state) => state.budgetPeriod);
   const setBudget = useTransactionStore((state) => state.setBudget);
-  const getBudgetStatus = useTransactionStore((state) => state.getBudgetStatus);
+  const transactions = useTransactionStore((state) => state.transactions);
+
+  const getBudgetStatus = () => {
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    const currentWeek = Math.ceil(now.getDate() / 7);
+
+    let periodTransactions = transactions;
+
+    if (budgetPeriod === 'monthly') {
+      periodTransactions = transactions.filter(t => {
+        const transactionDate = new Date(t.date || Date.now());
+        return transactionDate.getMonth() === currentMonth && 
+               transactionDate.getFullYear() === currentYear;
+      });
+    } else if (budgetPeriod === 'weekly') {
+      periodTransactions = transactions.filter(t => {
+        const transactionDate = new Date(t.date || Date.now());
+        const transactionWeek = Math.ceil(transactionDate.getDate() / 7);
+        return transactionWeek === currentWeek && 
+               transactionDate.getMonth() === currentMonth &&
+               transactionDate.getFullYear() === currentYear;
+      });
+    }
+
+    const totalExpenses = periodTransactions
+      .filter(t => t.amount < 0)
+      .reduce((total, t) => total + Math.abs(t.amount), 0);
+
+    const remaining = budget - totalExpenses;
+    const percentageUsed = budget > 0 ? (totalExpenses / budget) * 100 : 0;
+
+    return {
+      budget,
+      spent: totalExpenses,
+      remaining,
+      percentageUsed,
+      isOverBudget: totalExpenses > budget,
+      period: budgetPeriod
+    };
+  };
 
   const budgetStatus = getBudgetStatus();
 
@@ -29,9 +70,9 @@ export const BudgetManager = () => {
   };
 
   const getProgressBarColor = () => {
-    if (budgetStatus.percentageUsed >= 100) return '#dc3545'; // Red
-    if (budgetStatus.percentageUsed >= 80) return '#ffc107'; // Yellow
-    return '#28a745'; // Green
+    if (budgetStatus.percentageUsed >= 100) return '#dc3545'; 
+    if (budgetStatus.percentageUsed >= 80) return '#ffc107';
+    return '#28a745';
   };
 
   const getStatusMessage = () => {

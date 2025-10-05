@@ -3,8 +3,89 @@ import useTransactionStore from '../store/transactionStore';
 
 export const AnalyticsDashboard = () => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const getTransactionAnalytics = useTransactionStore((state) => state.getTransactionAnalytics);
-  const getBudgetStatus = useTransactionStore((state) => state.getBudgetStatus);
+  const transactions = useTransactionStore((state) => state.transactions);
+  const budget = useTransactionStore((state) => state.budget);
+  const budgetPeriod = useTransactionStore((state) => state.budgetPeriod);
+  
+  const getTransactionAnalytics = () => {
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
+    const currentMonthTransactions = transactions.filter(t => {
+      const date = new Date(t.date || Date.now());
+      return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
+    });
+
+    const lastMonthTransactions = transactions.filter(t => {
+      const date = new Date(t.date || Date.now());
+      return date.getMonth() === lastMonth && date.getFullYear() === lastMonthYear;
+    });
+
+    const currentMonthExpenses = currentMonthTransactions
+      .filter(t => t.amount < 0)
+      .reduce((total, t) => total + Math.abs(t.amount), 0);
+
+    const lastMonthExpenses = lastMonthTransactions
+      .filter(t => t.amount < 0)
+      .reduce((total, t) => total + Math.abs(t.amount), 0);
+
+    const expenseChange = lastMonthExpenses > 0 ? 
+      ((currentMonthExpenses - lastMonthExpenses) / lastMonthExpenses) * 100 : 0;
+
+    const categoryTotals = {};
+    transactions.forEach(t => {
+      const category = t.category || 'Uncategorized';
+      if (!categoryTotals[category]) {
+        categoryTotals[category] = { income: 0, expense: 0 };
+      }
+      if (t.amount > 0) {
+        categoryTotals[category].income += t.amount;
+      } else {
+        categoryTotals[category].expense += Math.abs(t.amount);
+      }
+    });
+
+    return {
+      currentMonthExpenses,
+      lastMonthExpenses,
+      expenseChange,
+      categoryTotals,
+      totalTransactions: transactions.length,
+      averageTransaction: transactions.length > 0 ? 
+        transactions.reduce((sum, t) => sum + t.amount, 0) / transactions.length : 0
+    };
+  };
+
+  const getBudgetStatus = () => {
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    const periodTransactions = transactions.filter(t => {
+      const transactionDate = new Date(t.date || Date.now());
+      return transactionDate.getMonth() === currentMonth && 
+             transactionDate.getFullYear() === currentYear;
+    });
+
+    const totalExpenses = periodTransactions
+      .filter(t => t.amount < 0)
+      .reduce((total, t) => total + Math.abs(t.amount), 0);
+
+    const remaining = budget - totalExpenses;
+    const percentageUsed = budget > 0 ? (totalExpenses / budget) * 100 : 0;
+
+    return {
+      budget,
+      spent: totalExpenses,
+      remaining,
+      percentageUsed,
+      isOverBudget: totalExpenses > budget,
+      period: budgetPeriod
+    };
+  };
   
   const analytics = getTransactionAnalytics();
   const budgetStatus = getBudgetStatus();

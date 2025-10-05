@@ -18,7 +18,6 @@ export const Transaction = ({ transaction }) => {
         "Uncategorized": "❓"
     };
 
-    // Legacy emoji support
     const textEmojiMap = {
         Groceries: "🛒",
         Coffee: "☕",

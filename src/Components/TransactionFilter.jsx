@@ -5,10 +5,21 @@ export const TransactionFilter = () => {
   const filterText = useTransactionStore((state) => state.filterText);
   const filterType = useTransactionStore((state) => state.filterType);
   const setFilter = useTransactionStore((state) => state.setFilter);
-  const getFilteredTransactions = useTransactionStore((state) => state.getFilteredTransactions);
-  
-  const filteredTransactions = getFilteredTransactions();
   const allTransactions = useTransactionStore((state) => state.transactions);
+  
+  const filteredTransactions = allTransactions.filter(transaction => {
+    const matchesText = filterText === '' || 
+      transaction.text.toLowerCase().includes(filterText.toLowerCase());
+    
+    let matchesType = true;
+    if (filterType === 'income') {
+      matchesType = transaction.amount > 0;
+    } else if (filterType === 'expense') {
+      matchesType = transaction.amount < 0;
+    }
+    
+    return matchesText && matchesType;
+  });
 
   const handleSearchChange = (e) => {
     setFilter(e.target.value, filterType);
