@@ -3,11 +3,17 @@ import useTransactionStore from '../store/transactionStore';
 
 
 export const IncomeExpenses = () => {
-    const getIncome = useTransactionStore((state) => state.getIncome);
-    const getExpense = useTransactionStore((state) => state.getExpense);
+    const transactions = useTransactionStore((state) => state.transactions);
     
-    const income = getIncome().toFixed(2);
-    const expense = getExpense().toFixed(2);
+    const income = transactions
+        .filter(transaction => transaction.amount > 0)
+        .reduce((total, transaction) => total + transaction.amount, 0)
+        .toFixed(2);
+    
+    const expense = transactions
+        .filter(transaction => transaction.amount < 0)
+        .reduce((total, transaction) => total + Math.abs(transaction.amount), 0)
+        .toFixed(2);
 
     return(
         <div className="inc-exp-container">

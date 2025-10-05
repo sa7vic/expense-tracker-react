@@ -1,6 +1,5 @@
 import useTransactionStore from '../store/transactionStore';
 
-// Custom hook for transaction actions
 export const useTransactionActions = () => {
   const addTransaction = useTransactionStore((state) => state.addTransaction);
   const deleteTransaction = useTransactionStore((state) => state.deleteTransaction);
@@ -15,17 +14,21 @@ export const useTransactionActions = () => {
   };
 };
 
-// Custom hook for transaction data
 export const useTransactionData = () => {
   const transactions = useTransactionStore((state) => state.transactions);
-  const getTotalBalance = useTransactionStore((state) => state.getTotalBalance);
-  const getIncome = useTransactionStore((state) => state.getIncome);
-  const getExpense = useTransactionStore((state) => state.getExpense);
+
+  const totalBalance = transactions.reduce((total, transaction) => total + transaction.amount, 0);
+  const income = transactions
+    .filter(transaction => transaction.amount > 0)
+    .reduce((total, transaction) => total + transaction.amount, 0);
+  const expense = transactions
+    .filter(transaction => transaction.amount < 0)
+    .reduce((total, transaction) => total + Math.abs(transaction.amount), 0);
 
   return {
     transactions,
-    totalBalance: getTotalBalance(),
-    income: getIncome(),
-    expense: getExpense(),
+    totalBalance,
+    income,
+    expense,
   };
 };

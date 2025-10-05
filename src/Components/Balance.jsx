@@ -2,9 +2,9 @@ import React from 'react'
 import useTransactionStore from '../store/transactionStore'
 
 export const Balance = () => {
-    const getTotalBalance = useTransactionStore((state) => state.getTotalBalance);
+    const transactions = useTransactionStore((state) => state.transactions);
     
-    const total = getTotalBalance().toFixed(2);
+    const total = transactions.reduce((total, transaction) => total + transaction.amount, 0).toFixed(2);
     return (
         <>
             <h4>Your Balance</h4>

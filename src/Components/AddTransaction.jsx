@@ -4,6 +4,8 @@ import useTransactionStore from "../store/transactionStore";
 export const AddTransaction = () => {
   const [text, setText] = useState("");
   const [amount, setAmount] = useState("");
+  const [category, setCategory] = useState("Uncategorized");
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [submitted, setSubmitted] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
@@ -30,11 +32,15 @@ export const AddTransaction = () => {
       id: Date.now(),
       text,
       amount: +amount,
+      category,
+      date: new Date(date).toISOString(),
     };
 
     addTransaction(newTransaction);
     setText("");
     setAmount("");
+    setCategory("Uncategorized");
+    setDate(new Date().toISOString().split('T')[0]);
     setShowSuggestions(false);
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 1000);
@@ -102,6 +108,47 @@ export const AddTransaction = () => {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Enter amount..."
+          />
+        </div>
+
+        <div className="form-control">
+          <label htmlFor="category">Category</label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '10px',
+              border: '1px solid #ccc',
+              borderRadius: '4px'
+            }}
+          >
+            <option value="Uncategorized">Uncategorized</option>
+            <option value="Food & Dining">Food & Dining</option>
+            <option value="Transportation">Transportation</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Bills & Utilities">Bills & Utilities</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Education">Education</option>
+            <option value="Income">Income</option>
+            <option value="Investment">Investment</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div className="form-control">
+          <label htmlFor="date">Date</label>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '10px',
+              border: '1px solid #ccc',
+              borderRadius: '4px'
+            }}
           />
         </div>
 
