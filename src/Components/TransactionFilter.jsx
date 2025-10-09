@@ -7,19 +7,14 @@ export const TransactionFilter = () => {
   const setFilter = useTransactionStore((state) => state.setFilter);
   const allTransactions = useTransactionStore((state) => state.transactions);
   
-  const filteredTransactions = allTransactions.filter(transaction => {
-    const matchesText = filterText === '' || 
-      transaction.text.toLowerCase().includes(filterText.toLowerCase());
-    
-    let matchesType = true;
-    if (filterType === 'income') {
-      matchesType = transaction.amount > 0;
-    } else if (filterType === 'expense') {
-      matchesType = transaction.amount < 0;
-    }
-    
-    return matchesText && matchesType;
-  });
+  // NEW: Add sorting state and methods
+  const sortBy = useTransactionStore((state) => state.sortBy);
+  const sortOrder = useTransactionStore((state) => state.sortOrder);
+  const setSorting = useTransactionStore((state) => state.setSorting);
+  const getSortedTransactions = useTransactionStore((state) => state.getSortedTransactions);
+  
+  // Use the new getSortedTransactions method instead of local filtering
+  const filteredTransactions = getSortedTransactions();
 
   const handleSearchChange = (e) => {
     setFilter(e.target.value, filterType);
@@ -27,6 +22,12 @@ export const TransactionFilter = () => {
 
   const handleTypeChange = (e) => {
     setFilter(filterText, e.target.value);
+  };
+
+  // NEW: Add sorting handler
+  const handleSortChange = (e) => {
+    const [newSortBy, newSortOrder] = e.target.value.split('-');
+    setSorting(newSortBy, newSortOrder);
   };
 
   const clearFilter = () => {
@@ -39,7 +40,7 @@ export const TransactionFilter = () => {
       padding: '20px'
     }}>
       <h4 style={{ margin: '0 0 18px 0' }}>
-        🔍 Filter Transactions 
+        🔍 Filter & Sort Transactions 
         <span style={{ fontSize: '14px', fontWeight: 'normal', marginLeft: '10px' }}>
           ({filteredTransactions.length} of {allTransactions.length} shown)
         </span>
@@ -77,18 +78,40 @@ export const TransactionFilter = () => {
           <option value="income">Income Only</option>
           <option value="expense">Expenses Only</option>
         </select>
+
+        {/* NEW: Add sorting dropdown */}
+        <select
+          value={${sortBy}-${sortOrder}}
+          onChange={handleSortChange}
+          style={{
+            padding: '8px 12px',
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            fontSize: '14px',
+            minWidth: '140px'
+          }}
+        >
+          <option value="date-desc">📅 Newest First</option>
+          <option value="date-asc">📅 Oldest First</option>
+          <option value="amount-desc">💰 Highest Amount</option>
+          <option value="amount-asc">💰 Lowest Amount</option>
+          <option value="text-asc">🔤 A to Z</option>
+          <option value="text-desc">🔤 Z to A</option>
+          <option value="category-asc">📂 Category A-Z</option>
+          <option value="category-desc">📂 Category Z-A</option>
+        </select>
         
         {(filterText || filterType !== 'all') && (
           <button
             onClick={clearFilter}
             className="btn btn-secondary btn-small"
           >
-            ✖️ Clear Filter
+            ✖ Clear Filter
           </button>
         )}
       </div>
 
-      {/* Quick filter buttons */}
+      {/* Keep your existing quick filter buttons */}
       <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
         <span style={{ fontSize: '12px', color: '#666', alignSelf: 'center' }}>Quick filters:</span>
         {['Salary', 'Rent', 'Coffee', 'Groceries'].map(term => (
@@ -98,10 +121,9 @@ export const TransactionFilter = () => {
             style={{
               padding: '4px 8px',
               fontSize: '12px',
-              backgroundColor: filterText === term ? '#007bff' : '#e9ecef',
-              color: filterText === term ? 'white' : '#333',
-              border: '1px solid #ccc',
+              border: '1px solid #ddd',
               borderRadius: '12px',
+              background: filterText === term ? '#e3f2fd' : 'white',
               cursor: 'pointer'
             }}
           >
@@ -109,25 +131,6 @@ export const TransactionFilter = () => {
           </button>
         ))}
       </div>
-
-      {/* Filter summary */}
-      {filteredTransactions.length !== allTransactions.length && (
-        <div style={{
-          marginTop: '12px',
-          padding: '12px',
-          background: 'rgba(102, 126, 234, 0.1)',
-          border: '1px solid rgba(102, 126, 234, 0.2)',
-          borderRadius: '8px',
-          fontSize: '13px',
-          color: 'var(--primary-color)',
-          fontWeight: '500'
-        }}>
-          <strong>Filter Active:</strong> 
-          {filterText && ` Text: "${filterText}"`}
-          {filterText && filterType !== 'all' && ', '}
-          {filterType !== 'all' && ` Type: ${filterType}`}
-        </div>
-      )}
     </div>
   );
 };
