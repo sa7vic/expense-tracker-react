@@ -119,7 +119,7 @@ export const AddTransaction = () => {
             style={{
               width: '100%',
               padding: '10px',
-              border: '1px solid #ccc',
+              border: 'var(--glass-border)',
               borderRadius: '4px'
             }}
           >
@@ -146,7 +146,7 @@ export const AddTransaction = () => {
             style={{
               width: '100%',
               padding: '10px',
-              border: '1px solid #ccc',
+              border: 'var(--glass-border)',
               borderRadius: '4px'
             }}
           />
