@@ -29,8 +29,8 @@ export const TransactionStats = () => {
   };
 
   return (
-    <div className="stats-container" style={{ marginTop: '20px', padding: '15px', border: '1px solid #ccc', borderRadius: '5px' }}>
-      <h3>Transaction Statistics</h3>
+    <div className="stats-container" style={{ marginTop: '20px', padding: '24px' }}>
+      <h3>📊 Transaction Statistics</h3>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px', marginBottom: '15px' }}>
         <div>
           <strong>Total Transactions:</strong> {totalTransactions}
@@ -49,27 +49,13 @@ export const TransactionStats = () => {
       <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
         <button 
           onClick={handleClearAll}
-          style={{ 
-            padding: '8px 12px', 
-            backgroundColor: '#dc3545', 
-            color: 'white', 
-            border: 'none', 
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
+          className="btn btn-danger btn-small"
         >
           Clear All
         </button>
         <button 
           onClick={handleReset}
-          style={{ 
-            padding: '8px 12px', 
-            backgroundColor: '#6c757d', 
-            color: 'white', 
-            border: 'none', 
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
+          className="btn btn-secondary btn-small"
         >
           Reset to Initial
         </button>

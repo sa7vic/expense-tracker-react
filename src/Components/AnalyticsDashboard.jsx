@@ -95,21 +95,19 @@ export const AnalyticsDashboard = () => {
 
   return (
     <div className="analytics-dashboard" style={{
-      margin: '20px 0',
-      border: '1px solid #ddd',
-      borderRadius: '8px',
-      backgroundColor: '#fff'
+      margin: '20px 0'
     }}>
       <div 
         onClick={() => setIsExpanded(!isExpanded)}
         style={{
-          padding: '15px',
-          backgroundColor: '#f8f9fa',
-          borderRadius: '8px 8px 0 0',
+          padding: '20px',
+          background: 'rgba(102, 126, 234, 0.05)',
+          borderRadius: '16px 16px 0 0',
           cursor: 'pointer',
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center'
+          alignItems: 'center',
+          transition: 'all 0.3s ease'
         }}
       >
         <h3 style={{ margin: 0, color: '#333' }}>📊 Analytics Dashboard</h3>
