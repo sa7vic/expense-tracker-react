@@ -110,7 +110,7 @@ export const AnalyticsDashboard = () => {
           transition: 'all 0.3s ease'
         }}
       >
-        <h3 style={{ margin: 0, color: '#333' }}>📊 Analytics Dashboard</h3>
+        <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>📊 Analytics Dashboard</h3>
         <span style={{ fontSize: '18px' }}>{isExpanded ? '▼' : '▶'}</span>
       </div>
 
@@ -125,41 +125,41 @@ export const AnalyticsDashboard = () => {
           }}>
             <div style={{
               padding: '15px',
-              backgroundColor: '#e3f2fd',
+              backgroundColor: 'rgba(102, 126, 234, 0.1)',
               borderRadius: '6px',
               textAlign: 'center'
             }}>
-              <h4 style={{ margin: '0 0 5px 0', color: '#1976d2' }}>Total Transactions</h4>
-              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#333' }}>
+              <h4 style={{ margin: '0 0 5px 0', color: 'var(--primary-color)' }}>Total Transactions</h4>
+              <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--text-primary)' }}>
                 {analytics.totalTransactions}
               </div>
             </div>
 
             <div style={{
               padding: '15px',
-              backgroundColor: '#f3e5f5',
+              backgroundColor: 'rgba(118, 75, 162, 0.1)',
               borderRadius: '6px',
               textAlign: 'center'
             }}>
-              <h4 style={{ margin: '0 0 5px 0', color: '#7b1fa2' }}>Average Transaction</h4>
-              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#333' }}>
+              <h4 style={{ margin: '0 0 5px 0', color: 'var(--secondary-color)' }}>Average Transaction</h4>
+              <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--text-primary)' }}>
                 {formatCurrency(analytics.averageTransaction)}
               </div>
             </div>
 
             <div style={{
               padding: '15px',
-              backgroundColor: analytics.expenseChange >= 0 ? '#ffebee' : '#e8f5e8',
+              backgroundColor: analytics.expenseChange >= 0 ? 'rgba(250, 112, 154, 0.1)' : 'rgba(39, 174, 96, 0.1)',
               borderRadius: '6px',
               textAlign: 'center'
             }}>
-              <h4 style={{ margin: '0 0 5px 0', color: analytics.expenseChange >= 0 ? '#d32f2f' : '#388e3c' }}>
+              <h4 style={{ margin: '0 0 5px 0', color: analytics.expenseChange >= 0 ? 'var(--minus-color)' : 'var(--plus-color)' }}>
                 Monthly Change
               </h4>
               <div style={{ 
                 fontSize: '20px', 
                 fontWeight: 'bold', 
-                color: '#333',
+                color: 'var(--text-primary)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -173,32 +173,32 @@ export const AnalyticsDashboard = () => {
 
           {/* Monthly Comparison */}
           <div style={{ marginBottom: '20px' }}>
-            <h4 style={{ marginBottom: '10px', color: '#333' }}>Monthly Expense Comparison</h4>
+            <h4 style={{ marginBottom: '10px', color: 'var(--text-primary)' }}>Monthly Expense Comparison</h4>
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
               padding: '15px',
-              backgroundColor: '#f8f9fa',
+              backgroundColor: 'var(--bg-glass)',
               borderRadius: '6px'
             }}>
               <div>
-                <span style={{ fontSize: '14px', color: '#666' }}>This Month:</span>
-                <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#d32f2f' }}>
+                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>This Month:</span>
+                <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--minus-color)' }}>
                   {formatCurrency(analytics.currentMonthExpenses)}
                 </div>
               </div>
               <div>
-                <span style={{ fontSize: '14px', color: '#666' }}>Last Month:</span>
-                <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#666' }}>
+                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>Last Month:</span>
+                <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--text-secondary)' }}>
                   {formatCurrency(analytics.lastMonthExpenses)}
                 </div>
               </div>
               <div>
-                <span style={{ fontSize: '14px', color: '#666' }}>Difference:</span>
+                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>Difference:</span>
                 <div style={{ 
                   fontSize: '18px', 
                   fontWeight: 'bold', 
-                  color: analytics.expenseChange >= 0 ? '#d32f2f' : '#388e3c'
+                  color: analytics.expenseChange >= 0 ? 'var(--minus-color)' : 'var(--plus-color)'
                 }}>
                   {analytics.expenseChange >= 0 ? '+' : ''}{formatPercentage(analytics.expenseChange)}
                 </div>
@@ -208,7 +208,7 @@ export const AnalyticsDashboard = () => {
 
           {/* Category Breakdown */}
           <div style={{ marginBottom: '20px' }}>
-            <h4 style={{ marginBottom: '10px', color: '#333' }}>Category Breakdown</h4>
+            <h4 style={{ marginBottom: '10px', color: 'var(--text-primary)' }}>Category Breakdown</h4>
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
@@ -217,14 +217,14 @@ export const AnalyticsDashboard = () => {
               {Object.entries(analytics.categoryTotals).map(([category, totals]) => (
                 <div key={category} style={{
                   padding: '10px',
-                  border: '1px solid #ddd',
+                  border: 'var(--glass-border)',
                   borderRadius: '4px',
-                  backgroundColor: '#fff'
+                  backgroundColor: 'var(--bg-card)'
                 }}>
                   <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>{category}</div>
-                  <div style={{ fontSize: '12px', color: '#666' }}>
-                    <div>Income: <span style={{ color: '#388e3c' }}>{formatCurrency(totals.income)}</span></div>
-                    <div>Expenses: <span style={{ color: '#d32f2f' }}>{formatCurrency(totals.expense)}</span></div>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                    <div>Income: <span style={{ color: 'var(--plus-color)' }}>{formatCurrency(totals.income)}</span></div>
+                    <div>Expenses: <span style={{ color: 'var(--minus-color)' }}>{formatCurrency(totals.expense)}</span></div>
                   </div>
                 </div>
               ))}
@@ -234,12 +234,12 @@ export const AnalyticsDashboard = () => {
           {/* Budget Performance */}
           {budgetStatus.budget > 0 && (
             <div>
-              <h4 style={{ marginBottom: '10px', color: '#333' }}>Budget Performance</h4>
+              <h4 style={{ marginBottom: '10px', color: 'var(--text-primary)' }}>Budget Performance</h4>
               <div style={{
                 padding: '15px',
-                backgroundColor: budgetStatus.isOverBudget ? '#ffebee' : '#e8f5e8',
+                backgroundColor: budgetStatus.isOverBudget ? 'rgba(250, 112, 154, 0.1)' : 'rgba(39, 174, 96, 0.1)',
                 borderRadius: '6px',
-                border: `2px solid ${budgetStatus.isOverBudget ? '#f44336' : '#4caf50'}`
+                border: `2px solid ${budgetStatus.isOverBudget ? 'var(--minus-color)' : 'var(--plus-color)'}`
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span>
@@ -249,7 +249,7 @@ export const AnalyticsDashboard = () => {
                     padding: '4px 8px',
                     borderRadius: '12px',
                     fontSize: '12px',
-                    backgroundColor: budgetStatus.isOverBudget ? '#d32f2f' : '#388e3c',
+                    backgroundColor: budgetStatus.isOverBudget ? 'var(--minus-color)' : 'var(--plus-color)',
                     color: 'white'
                   }}>
                     {budgetStatus.isOverBudget ? 'Over Budget' : 'On Track'}

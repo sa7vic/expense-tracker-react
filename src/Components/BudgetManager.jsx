@@ -70,9 +70,9 @@ export const BudgetManager = () => {
   };
 
   const getProgressBarColor = () => {
-    if (budgetStatus.percentageUsed >= 100) return '#dc3545'; 
-    if (budgetStatus.percentageUsed >= 80) return '#ffc107';
-    return '#28a745';
+    if (budgetStatus.percentageUsed >= 100) return 'var(--minus-color)'; 
+    if (budgetStatus.percentageUsed >= 80) return 'var(--warning-color)';
+    return 'var(--plus-color)';
   };
 
   const getStatusMessage = () => {
@@ -111,7 +111,7 @@ export const BudgetManager = () => {
               style={{
                 flex: 1,
                 padding: '8px',
-                border: '1px solid #ccc',
+                border: 'var(--glass-border)',
                 borderRadius: '4px'
               }}
             />
@@ -120,7 +120,7 @@ export const BudgetManager = () => {
               onChange={(e) => setPeriodInput(e.target.value)}
               style={{
                 padding: '8px',
-                border: '1px solid #ccc',
+                border: 'var(--glass-border)',
                 borderRadius: '4px'
               }}
             >
@@ -134,7 +134,7 @@ export const BudgetManager = () => {
               onClick={handleSaveBudget}
               style={{
                 padding: '8px 15px',
-                backgroundColor: '#28a745',
+                backgroundColor: 'var(--plus-color)',
                 color: 'white',
                 border: 'none',
                 borderRadius: '4px',
@@ -147,7 +147,7 @@ export const BudgetManager = () => {
               onClick={() => setIsEditing(false)}
               style={{
                 padding: '8px 15px',
-                backgroundColor: '#6c757d',
+                backgroundColor: 'var(--text-secondary)',
                 color: 'white',
                 border: 'none',
                 borderRadius: '4px',
@@ -173,7 +173,7 @@ export const BudgetManager = () => {
             <div style={{
               width: '100%',
               height: '20px',
-              backgroundColor: '#e9ecef',
+              backgroundColor: 'rgba(102, 126, 234, 0.1)',
               borderRadius: '10px',
               overflow: 'hidden',
               marginTop: '5px'
@@ -190,7 +190,7 @@ export const BudgetManager = () => {
           <div style={{ 
             fontSize: '14px', 
             fontWeight: 'bold',
-            color: budgetStatus.isOverBudget ? '#dc3545' : '#28a745'
+            color: budgetStatus.isOverBudget ? 'var(--minus-color)' : 'var(--plus-color)'
           }}>
             {getStatusMessage()}
           </div>

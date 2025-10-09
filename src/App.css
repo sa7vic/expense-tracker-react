@@ -22,9 +22,11 @@
   --bg-dark: #2c3e50;
   
   /* Text Colors */
-  --text-primary: #2c3e50;
-  --text-secondary: #7f8c8d;
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b7280;
   --text-light: #ecf0f1;
+  --text-muted: #9ca3af;
+  --text-on-gradient: #ffffff;
   
   /* Effects */
   --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -48,37 +50,65 @@
 
 body {
   background: var(--bg-main);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
   min-height: 100vh;
   margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 16px;
   line-height: 1.6;
   color: var(--text-primary);
-  padding: 20px;
   overflow-x: hidden;
 }
 
-.container {
-  margin: 20px auto;
-  width: 100%;
-  max-width: 480px;
+.app-header {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  border-bottom: var(--glass-border);
+  padding: 20px 40px;
   box-shadow: var(--box-shadow);
-  padding: 30px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dashboard-card {
   background: var(--bg-card);
   backdrop-filter: blur(20px);
   border: var(--glass-border);
   border-radius: var(--border-radius);
-  animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--box-shadow);
+  padding: 24px;
   transition: var(--transition);
+  height: fit-content;
 }
 
-.container:hover {
-  transform: translateY(-2px);
+.dashboard-card:hover {
+  transform: translateY(-4px);
   box-shadow: var(--box-shadow-hover);
+}
+
+.dashboard-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.dashboard-card.balance-card {
+  background: var(--primary-gradient);
+  color: white;
+  text-align: center;
+  padding: 40px 24px;
+}
+
+.dashboard-card.stats-overview {
+  grid-column: span 2;
 }
 
 @keyframes slideInUp {
@@ -130,16 +160,47 @@ h1 {
   background-clip: text;
   font-size: 2.5rem;
   font-weight: 700;
-  text-align: center;
   margin-bottom: 10px;
   letter-spacing: -0.5px;
 }
 
-h2, h3, h4 {
+.dashboard-card.balance-card h1 {
+  color: var(--text-on-gradient) !important;
+  -webkit-text-fill-color: var(--text-on-gradient) !important;
+  font-size: 3rem;
+  margin: 16px 0;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-card.balance-card h4,
+.dashboard-card.balance-card p {
+  color: var(--text-on-gradient) !important;
+}
+
+.app-header h2 {
   margin: 0;
-  text-align: center;
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1.5rem;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h2, h3, h4 {
+  margin: 0 0 16px 0;
   color: var(--text-primary);
   font-weight: 600;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+  color: var(--text-primary);
 }
 
 h3 {
@@ -152,6 +213,7 @@ h3 {
   margin: 30px 0 20px;
   font-size: 1.25rem;
   font-weight: 600;
+  color: var(--text-primary);
 }
 
 h4 {
@@ -171,12 +233,12 @@ h4 {
   padding: 24px;
   display: flex;
   justify-content: space-between;
-  margin: 20px 0;
   border-radius: var(--border-radius);
   color: var(--text-primary);
   animation: slideInLeft 0.6s ease-out;
   position: relative;
   overflow: hidden;
+  margin: 0;
 }
 
 .inc-exp-container::before {
@@ -459,22 +521,35 @@ input::placeholder {
 .transaction-filter,
 .analytics-dashboard,
 .stats-container {
-  background: var(--bg-glass);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  border: var(--glass-border);
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
   transition: var(--transition);
   animation: slideInUp 0.6s ease-out;
 }
 
-.budget-manager:hover,
-.transaction-filter:hover,
-.analytics-dashboard:hover,
-.stats-container:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--box-shadow-hover);
+/* Remove default margins from components inside cards */
+.dashboard-card > * {
+  margin-bottom: 0;
+}
+
+.dashboard-card > *:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+/* Style form elements inside dashboard cards */
+.dashboard-card label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.dashboard-card input,
+.dashboard-card select {
+  background: rgba(102, 126, 234, 0.05);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.dashboard-card .btn {
+  margin-top: 16px;
 }
 
 /* Progress Bar Styles */
@@ -513,17 +588,172 @@ input::placeholder {
   letter-spacing: normal;
 }
 
+/* Dashboard Grid Layouts */
+.dashboard-stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  grid-column: 1 / -1;
+}
+
+.dashboard-main-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  grid-column: 1 / -1;
+}
+
+.transactions-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Dashboard visual enhancements */
+.app-header {
+  border-bottom: 3px solid transparent;
+  background-image: var(--primary-gradient), var(--bg-card);
+  background-size: 100% 3px, 100% 100%;
+  background-repeat: no-repeat, no-repeat;
+  background-position: bottom, center;
+}
+
+.dashboard-card.balance-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-card.balance-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: rotate(45deg);
+}
+
+.dashboard-card.balance-card::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -30%;
+  width: 80%;
+  height: 80%;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+}
+
+/* Dashboard specific component styles */
+.compact-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.mini-card {
+  padding: 16px;
+  text-align: center;
+  background: var(--bg-glass);
+  border-radius: 12px;
+  border: var(--glass-border);
+}
+
+.metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+
+.metric-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Fix text colors in components */
+.dashboard-card h3,
+.dashboard-card h4 {
+  color: var(--text-primary) !important;
+}
+
+.dashboard-card p,
+.dashboard-card span {
+  color: var(--text-primary);
+}
+
+.dashboard-card .text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+/* Ensure all text elements use proper colors */
+body, p, span, div, li {
+  color: var(--text-primary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+}
+
+/* Override any remaining hardcoded text colors */
+* {
+  color: inherit;
+}
+
+/* Specific text color fixes for components */
+.list li {
+  color: var(--text-primary);
+}
+
+.suggestions li {
+  color: var(--text-primary);
+}
+
+label {
+  color: var(--text-secondary);
+}
+
 /* Mobile Responsiveness */
+@media (max-width: 1200px) {
+  .dashboard-main-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard-stats-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard-card.stats-overview {
+    grid-column: 1;
+  }
+}
+
 @media (max-width: 768px) {
-  body {
-    padding: 10px;
+  .app-header {
+    padding: 16px 20px;
   }
   
   .container {
-    margin: 10px auto;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 20px 16px;
+  }
+  
+  .dashboard-card {
     padding: 20px;
-    width: 100%;
-    max-width: 100%;
+  }
+  
+  .dashboard-card.balance-card h1 {
+    font-size: 2.5rem;
   }
   
   h1 {
@@ -548,12 +778,9 @@ input::placeholder {
     padding-top: 15px;
   }
   
-  .budget-manager,
-  .transaction-filter,
-  .analytics-dashboard,
-  .stats-container {
-    margin: 15px 0;
-    padding: 16px;
+  .dashboard-stats-row,
+  .dashboard-main-content {
+    grid-template-columns: 1fr;
   }
   
   .list li {
@@ -580,6 +807,8 @@ input::placeholder {
     --bg-glass: rgba(52, 73, 94, 0.25);
     --text-primary: #ecf0f1;
     --text-secondary: #bdc3c7;
+    --text-muted: #95a5a6;
+    --text-on-gradient: #ffffff;
   }
 }
 
