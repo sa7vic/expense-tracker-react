@@ -2,9 +2,11 @@ import React from "react";
 import useTransactionStore from "../store/transactionStore";
 import { Transaction } from "./Transaction";
 export const TransactionList = () => {
+    const getSortedTransactions = useTransactionStore((state) => state.getSortedTransactions);
     const transactions = useTransactionStore((state) => state.transactions);
     const filterText = useTransactionStore((state) => state.filterText);
     const filterType = useTransactionStore((state) => state.filterType);
+    const filteredTransactions = getSortedTransactions();
     
     const filteredTransactions = transactions.filter(transaction => {
         const matchesText = filterText === '' || 
@@ -27,4 +29,5 @@ export const TransactionList = () => {
             </ul>
         </>
     )
+
 }
