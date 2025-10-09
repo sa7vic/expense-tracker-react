@@ -85,25 +85,15 @@ export const BudgetManager = () => {
   return (
     <div className="budget-manager" style={{ 
       margin: '20px 0', 
-      padding: '20px', 
-      border: '1px solid #ddd', 
-      borderRadius: '8px',
-      backgroundColor: '#f8f9fa'
+      padding: '24px'
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-        <h3 style={{ margin: 0, color: '#333' }}>Budget Tracker</h3>
+        <h3 style={{ margin: 0 }}>💰 Budget Tracker</h3>
         {!isEditing && (
           <button 
             onClick={handleEditBudget}
-            style={{
-              padding: '5px 10px',
-              backgroundColor: '#007bff',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontSize: '12px'
-            }}
+            className="btn btn-small btn-secondary"
+            style={{ width: 'auto' }}
           >
             Edit Budget
           </button>

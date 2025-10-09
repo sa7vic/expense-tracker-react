@@ -40,33 +40,58 @@ export const Transaction = ({ transaction }) => {
 
     return (
         <li className={transaction.amount < 0 ? "minus" : "plus"} style={{ position: 'relative' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span>{emoji}</span>
-                    <span style={{ fontWeight: 'bold' }}>{transaction.text}</span>
-                </div>
+            <div style={{ display: 'flex', alignItems: 'center', flex: 1, gap: '12px' }}>
                 <div style={{ 
-                    fontSize: '12px', 
-                    color: '#666', 
-                    marginTop: '2px',
-                    display: 'flex',
-                    gap: '10px'
+                    fontSize: '24px',
+                    minWidth: '32px',
+                    textAlign: 'center'
                 }}>
-                    {transaction.category && (
-                        <span>📂 {transaction.category}</span>
-                    )}
-                    {transaction.date && (
-                        <span>📅 {formatDate(transaction.date)}</span>
-                    )}
+                    {emoji}
+                </div>
+                <div style={{ flex: 1 }}>
+                    <div style={{ 
+                        fontWeight: '600', 
+                        fontSize: '16px',
+                        marginBottom: '4px',
+                        color: 'var(--text-primary)'
+                    }}>
+                        {transaction.text}
+                    </div>
+                    <div style={{ 
+                        fontSize: '12px', 
+                        color: 'var(--text-secondary)', 
+                        display: 'flex',
+                        gap: '12px',
+                        alignItems: 'center'
+                    }}>
+                        {transaction.category && (
+                            <span style={{
+                                padding: '2px 8px',
+                                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                                borderRadius: '12px',
+                                fontSize: '11px',
+                                fontWeight: '500'
+                            }}>
+                                {transaction.category}
+                            </span>
+                        )}
+                        {transaction.date && (
+                            <span>📅 {formatDate(transaction.date)}</span>
+                        )}
+                    </div>
                 </div>
             </div>
-            <span style={{ fontWeight: 'bold', marginRight: '10px' }}>
+            <div style={{ 
+                fontWeight: '700', 
+                fontSize: '16px',
+                marginRight: '40px',
+                color: transaction.amount < 0 ? 'var(--minus-color)' : 'var(--plus-color)'
+            }}>
                 {sign}${Math.abs(transaction.amount)}
-            </span>
+            </div>
             <button 
                 onClick={() => deleteTransaction(transaction.id)} 
                 className="delete-btn"
-                style={{ position: 'absolute', right: '5px', top: '50%', transform: 'translateY(-50%)' }}
             >
                 ×
             </button>

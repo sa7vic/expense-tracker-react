@@ -36,13 +36,10 @@ export const TransactionFilter = () => {
   return (
     <div className="transaction-filter" style={{
       margin: '20px 0',
-      padding: '15px',
-      border: '1px solid #ddd',
-      borderRadius: '8px',
-      backgroundColor: '#f8f9fa'
+      padding: '20px'
     }}>
-      <h4 style={{ margin: '0 0 15px 0', color: '#333' }}>
-        Filter Transactions 
+      <h4 style={{ margin: '0 0 18px 0' }}>
+        🔍 Filter Transactions 
         <span style={{ fontSize: '14px', fontWeight: 'normal', marginLeft: '10px' }}>
           ({filteredTransactions.length} of {allTransactions.length} shown)
         </span>
@@ -84,17 +81,9 @@ export const TransactionFilter = () => {
         {(filterText || filterType !== 'all') && (
           <button
             onClick={clearFilter}
-            style={{
-              padding: '8px 12px',
-              backgroundColor: '#6c757d',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontSize: '14px'
-            }}
+            className="btn btn-secondary btn-small"
           >
-            Clear Filter
+            ✖️ Clear Filter
           </button>
         )}
       </div>
@@ -124,13 +113,14 @@ export const TransactionFilter = () => {
       {/* Filter summary */}
       {filteredTransactions.length !== allTransactions.length && (
         <div style={{
-          marginTop: '10px',
-          padding: '8px',
-          backgroundColor: '#d1ecf1',
-          border: '1px solid #bee5eb',
-          borderRadius: '4px',
-          fontSize: '12px',
-          color: '#0c5460'
+          marginTop: '12px',
+          padding: '12px',
+          background: 'rgba(102, 126, 234, 0.1)',
+          border: '1px solid rgba(102, 126, 234, 0.2)',
+          borderRadius: '8px',
+          fontSize: '13px',
+          color: 'var(--primary-color)',
+          fontWeight: '500'
         }}>
           <strong>Filter Active:</strong> 
           {filterText && ` Text: "${filterText}"`}
