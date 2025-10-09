@@ -17,25 +17,26 @@ function App() {
         <Header />
       </div>
       <div className='container'>
-        {/* Balance Card - Featured prominently */}
-        <div className="dashboard-card balance-card">
-          <Balance />
-        </div>
-        
-        {/* Stats Overview Row */}
-        <div className="dashboard-stats-row">
-          <div className="dashboard-card">
-            <IncomeExpenses />
+        {/* Top Row - Balance and Quick Stats */}
+        <div className="dashboard-top-row">
+          <div className="dashboard-card balance-card">
+            <Balance />
           </div>
-          <div className="dashboard-card">
+          <div className="dashboard-card quick-stats-card">
             <h3 className="card-title">Quick Stats</h3>
             <TransactionStats />
           </div>
         </div>
 
-        {/* Main Content Area */}
-        <div className="dashboard-main-content">
-          <div className="transactions-section">
+        {/* Income/Expenses Row */}
+        <div className="dashboard-card income-expenses-card">
+          <IncomeExpenses />
+        </div>
+
+        {/* Main Content Grid */}
+        <div className="dashboard-main-grid">
+          {/* Left Column - Transactions */}
+          <div className="transactions-column">
             <div className="dashboard-card">
               <h3 className="card-title">Recent Transactions</h3>
               <TransactionFilter />
@@ -43,7 +44,8 @@ function App() {
             </div>
           </div>
           
-          <div className="sidebar-section">
+          {/* Right Column - Actions and Management */}
+          <div className="actions-column">
             <div className="dashboard-card">
               <h3 className="card-title">Add Transaction</h3>
               <AddTransaction />
@@ -57,7 +59,7 @@ function App() {
         </div>
 
         {/* Analytics Dashboard - Full Width */}
-        <div className="dashboard-card full-width">
+        <div className="dashboard-card analytics-card">
           <h3 className="card-title">Analytics Dashboard</h3>
           <AnalyticsDashboard />
         </div>
