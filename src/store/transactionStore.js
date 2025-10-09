@@ -17,6 +17,8 @@ const useTransactionStore = create(
             budgetPeriod: 'monthly',
             filterText: '',
             filterType: 'all',
+            sortBy: 'date', // NEW: Add sort state
+            sortOrder: 'desc', // NEW: Add sort order (desc = newest first)
             
             
             addTransaction: (transaction) =>
@@ -56,6 +58,60 @@ const useTransactionStore = create(
                     filterType: type
                 })),
 
+            // NEW: Add sorting method
+            setSorting: (sortBy, sortOrder = 'desc') =>
+                set(() => ({
+                    sortBy,
+                    sortOrder
+                })),
+
+            // NEW: Add getter for sorted and filtered transactions
+            getSortedTransactions: () => {
+                const state = get();
+                let filtered = state.transactions;
+
+                // Apply filters
+                if (state.filterText) {
+                    filtered = filtered.filter(transaction =>
+                        transaction.text.toLowerCase().includes(state.filterText.toLowerCase())
+                    );
+                }
+
+                if (state.filterType !== 'all') {
+                    filtered = filtered.filter(transaction => {
+                        if (state.filterType === 'income') return transaction.amount > 0;
+                        if (state.filterType === 'expense') return transaction.amount < 0;
+                        return true;
+                    });
+                }
+
+                // Apply sorting
+                const sorted = [...filtered].sort((a, b) => {
+                    let comparison = 0;
+                    
+                    switch (state.sortBy) {
+                        case 'date':
+                            comparison = new Date(a.date) - new Date(b.date);
+                            break;
+                        case 'amount':
+                            comparison = Math.abs(a.amount) - Math.abs(b.amount);
+                            break;
+                        case 'text':
+                            comparison = a.text.localeCompare(b.text);
+                            break;
+                        case 'category':
+                            comparison = (a.category || '').localeCompare(b.category || '');
+                            break;
+                        default:
+                            comparison = 0;
+                    }
+
+                    return state.sortOrder === 'desc' ? -comparison : comparison;
+                });
+
+                return sorted;
+            }
+
         }),
         {
             name: 'expense-tracker-storage', 
@@ -63,7 +119,9 @@ const useTransactionStore = create(
             partialize: (state) => ({
                 transactions: state.transactions,
                 budget: state.budget,
-                budgetPeriod: state.budgetPeriod
+                budgetPeriod: state.budgetPeriod,
+                sortBy: state.sortBy, // NEW: Persist sort preferences
+                sortOrder: state.sortOrder
             })
         }
     )
