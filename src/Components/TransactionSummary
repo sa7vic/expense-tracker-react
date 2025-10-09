@@ -1,0 +1,211 @@
+import React from 'react';
+import useTransactionStore from '../store/transactionStore';
+
+export const TransactionSummary = () => {
+  const transactions = useTransactionStore((state) => state.transactions);
+
+  const getSummaryData = () => {
+    if (transactions.length === 0) {
+      return {
+        dailyAverage: 0,
+        weeklyAverage: 0,
+        largestExpense: null,
+        largestIncome: null,
+        spendingStreak: 0,
+        totalDays: 0,
+        recentActivity: 'No transactions yet'
+      };
+    }
+
+    const now = new Date('2025-10-09T16:52:56Z');
+    const expenses = transactions.filter(t => t.amount < 0);
+    const income = transactions.filter(t => t.amount > 0);
+
+    // Find largest transactions
+    const largestExpense = expenses.reduce((max, t) => 
+      Math.abs(t.amount) > Math.abs(max?.amount || 0) ? t : max, null);
+    const largestIncome = income.reduce((max, t) => 
+      t.amount > (max?.amount || 0) ? t : max, null);
+
+    // Calculate date range
+    const dates = transactions.map(t => new Date(t.date || now));
+    const oldestDate = new Date(Math.min(...dates));
+    const newestDate = new Date(Math.max(...dates));
+    const totalDays = Math.max(1, Math.ceil((newestDate - oldestDate) / (1000 * 60 * 60 * 24)) + 1);
+
+    // Calculate averages
+    const totalExpenseAmount = expenses.reduce((sum, t) => sum + Math.abs(t.amount), 0);
+    const dailyAverage = totalExpenseAmount / totalDays;
+    const weeklyAverage = dailyAverage * 7;
+
+    // Calculate spending streak (consecutive days with expenses)
+    const expenseDates = expenses.map(t => new Date(t.date || now).toDateString());
+    const uniqueExpenseDates = [...new Set(expenseDates)].sort();
+    
+    let spendingStreak = 0;
+    let currentStreak = 0;
+    const today = now.toDateString();
+    
+    for (let i = 0; i < totalDays; i++) {
+      const checkDate = new Date(now);
+      checkDate.setDate(checkDate.getDate() - i);
+      const dateStr = checkDate.toDateString();
+      
+      if (uniqueExpenseDates.includes(dateStr)) {
+        currentStreak++;
+      } else {
+        break;
+      }
+    }
+    spendingStreak = currentStreak;
+
+    // Recent activity
+    const last24h = transactions.filter(t => {
+      const transactionDate = new Date(t.date || now);
+      const hoursDiff = (now - transactionDate) / (1000 * 60 * 60);
+      return hoursDiff <= 24;
+    });
+
+    let recentActivity = 'No recent activity';
+    if (last24h.length > 0) {
+      const recentExpenses = last24h.filter(t => t.amount < 0).length;
+      const recentIncome = last24h.filter(t => t.amount > 0).length;
+      recentActivity = `${last24h.length} transaction${last24h.length > 1 ? 's' : ''} today`;
+      if (recentExpenses && recentIncome) {
+        recentActivity += ` (${recentIncome} income, ${recentExpenses} expenses)`;
+      } else if (recentExpenses) {
+        recentActivity += ` (${recentExpenses} expense${recentExpenses > 1 ? 's' : ''})`;
+      } else if (recentIncome) {
+        recentActivity += ` (${recentIncome} income)`;
+      }
+    }
+
+    return {
+      dailyAverage,
+      weeklyAverage,
+      largestExpense,
+      largestIncome,
+      spendingStreak,
+      totalDays,
+      recentActivity
+    };
+  };
+
+  const summary = getSummaryData();
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount);
+  };
+
+  const getStreakEmoji = (streak) => {
+    if (streak === 0) return '✅';
+    if (streak <= 2) return '⚠';
+    if (streak <= 5) return '🔥';
+    return '🚨';
+  };
+
+  const getStreakMessage = (streak) => {
+    if (streak === 0) return 'No spending today';
+    if (streak === 1) return 'Spent today';
+    if (streak <= 3) return `${streak} days spending`;
+    if (streak <= 7) return `${streak} day spending streak!`;
+    return `${streak} day spending streak! 🚨`;
+  };
+
+  return (
+    <div className="transaction-summary" style={{
+      background: 'var(--bg-card)',
+      borderRadius: 'var(--border-radius)',
+      padding: '24px',
+      boxShadow: 'var(--box-shadow)',
+      backdropFilter: 'blur(20px)',
+      border: 'var(--glass-border)'
+    }}>
+      <h3 style={{ 
+        margin: '0 0 20px 0', 
+        color: 'var(--text-primary)',
+        fontSize: '18px',
+        fontWeight: '600'
+      }}>
+        📊 Spending Insights
+      </h3>
+
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+        gap: '16px',
+        marginBottom: '20px'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '24px', marginBottom: '4px' }}>💰</div>
+          <div style={{ fontSize: '16px', fontWeight: '600', color: 'var(--primary-color)' }}>
+            {formatCurrency(summary.dailyAverage)}
+          </div>
+          <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+            Daily Average
+          </div>
+        </div>
+
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '24px', marginBottom: '4px' }}>📅</div>
+          <div style={{ fontSize: '16px', fontWeight: '600', color: 'var(--secondary-color)' }}>
+            {formatCurrency(summary.weeklyAverage)}
+          </div>
+          <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+            Weekly Average
+          </div>
+        </div>
+
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '24px', marginBottom: '4px' }}>
+            {getStreakEmoji(summary.spendingStreak)}
+          </div>
+          <div style={{ fontSize: '16px', fontWeight: '600', color: 'var(--accent-color)' }}>
+            {summary.spendingStreak}
+          </div>
+          <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+            {getStreakMessage(summary.spendingStreak)}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ 
+        borderTop: '1px solid rgba(0,0,0,0.1)', 
+        paddingTop: '16px',
+        fontSize: '14px'
+      }}>
+        <div style={{ marginBottom: '12px' }}>
+          <strong>📈 Recent Activity:</strong>
+          <span style={{ marginLeft: '8px', color: 'var(--text-secondary)' }}>
+            {summary.recentActivity}
+          </span>
+        </div>
+
+        {summary.largestExpense && (
+          <div style={{ marginBottom: '8px' }}>
+            <strong>🔻 Largest Expense:</strong>
+            <span style={{ marginLeft: '8px', color: 'var(--minus-color)' }}>
+              {formatCurrency(Math.abs(summary.largestExpense.amount))} - {summary.largestExpense.text}
+            </span>
+          </div>
+        )}
+
+        {summary.largestIncome && (
+          <div style={{ marginBottom: '8px' }}>
+            <strong>🔺 Largest Income:</strong>
+            <span style={{ marginLeft: '8px', color: 'var(--plus-color)' }}>
+              {formatCurrency(summary.largestIncome.amount)} - {summary.largestIncome.text}
+            </span>
+          </div>
+        )}
+
+        <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '12px' }}>
+          📊 Tracking {transactions.length} transactions over {summary.totalDays} days
+        </div>
+      </div>
+    </div>
+  );
+};

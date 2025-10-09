@@ -8,6 +8,7 @@ import { TransactionList } from './Components/TransactionList'
 import { AddTransaction } from './Components/AddTransaction';
 import { TransactionStats } from './Components/TransactionStats';
 import { AnalyticsDashboard } from './Components/AnalyticsDashboard';
+import { TransactionSummary } from './Components/TransactionSummary'; // ADD THIS LINE
 import './App.css';
 
 function App() {
@@ -17,26 +18,27 @@ function App() {
         <Header />
       </div>
       <div className='container'>
-        {/* Top Row - Balance and Quick Stats */}
-        <div className="dashboard-top-row">
-          <div className="dashboard-card balance-card">
-            <Balance />
+        <div className="dashboard-card balance-card">
+          <Balance />
+        </div>
+        
+        <div className="dashboard-stats-row">
+          <div className="dashboard-card">
+            <IncomeExpenses />
           </div>
-          <div className="dashboard-card quick-stats-card">
+          <div className="dashboard-card">
             <h3 className="card-title">Quick Stats</h3>
             <TransactionStats />
           </div>
         </div>
 
-        {/* Income/Expenses Row */}
-        <div className="dashboard-card income-expenses-card">
-          <IncomeExpenses />
+        {/* ADD THIS NEW SECTION */}
+        <div className="dashboard-card">
+          <TransactionSummary />
         </div>
 
-        {/* Main Content Grid */}
-        <div className="dashboard-main-grid">
-          {/* Left Column - Transactions */}
-          <div className="transactions-column">
+        <div className="dashboard-main-content">
+          <div className="transactions-section">
             <div className="dashboard-card">
               <h3 className="card-title">Recent Transactions</h3>
               <TransactionFilter />
@@ -44,8 +46,7 @@ function App() {
             </div>
           </div>
           
-          {/* Right Column - Actions and Management */}
-          <div className="actions-column">
+          <div className="sidebar-section">
             <div className="dashboard-card">
               <h3 className="card-title">Add Transaction</h3>
               <AddTransaction />
@@ -58,8 +59,7 @@ function App() {
           </div>
         </div>
 
-        {/* Analytics Dashboard - Full Width */}
-        <div className="dashboard-card analytics-card">
+        <div className="dashboard-card full-width">
           <h3 className="card-title">Analytics Dashboard</h3>
           <AnalyticsDashboard />
         </div>
